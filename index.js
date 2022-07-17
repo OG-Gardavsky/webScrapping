@@ -13,24 +13,38 @@ const run = async () => {
     const page = await browser.newPage()
     
     
+    // because of waiting for clicking agree button
     await page.goto('https://www.sreality.cz/en/search/for-sale/apartments?order=cheapest')
     await page.waitForTimeout(5000)
-    console.log('waited')
+    // await page.wai
+    // console.log('waited')
 
 
 
-    const propertyObject =  (await page.$x('/html/body/div[2]/div[1]/div[2]/div[3]/div[3]/div/div/div/div/div[3]/div/div[1]'))[0]
+    // xpath
+    // const propertyObject =  (await page.$x('/html/body/div[2]/div[1]/div[2]/div[3]/div[3]/div/div/div/div/div[3]/div/div[1]'))[0]
+    // console.log(propertyObject.innerHTML)
+
+
+    const propertyObject = await page.evaluate(() => {
+        const propObject = document.querySelector('.info.clear.ng-scope')
+        return propObject.innerHTML
+
+
+    })
+
     console.log(propertyObject)
-    
-    
-    
-    
-    // await goToNextPage(page)
-
-
 
 
     
+    
+    
+    
+
+
+
+
+    
 
 
 
@@ -38,7 +52,7 @@ const run = async () => {
 
 
 
-
+    await goToNextPage(page)
     await page.waitForTimeout(1000)
     browser.close()
     return 'done'
