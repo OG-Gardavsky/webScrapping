@@ -20,13 +20,11 @@ const run = async () => {
 
 
 
-    const properties = await page.$$eval('div.property.ng-scope', elements => {
-        return elements.map(element => element.innerHTML)
+    const estateTitles = await page.$$eval('.name.ng-binding', elements => {
+        return elements.map(element => element.innerText)
     })
-    // name.forEach((el) => console.log(el.innerText))
-    console.log(properties)
 
-
+    console.log(estateTitles)
     
     
     
