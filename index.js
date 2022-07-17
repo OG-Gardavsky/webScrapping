@@ -1,4 +1,5 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer')
+const fs = require('fs')
 
 
 const goToNextPage = async(page) => {
@@ -12,9 +13,7 @@ const getEstateXpath = (index) => {
 
 const scan1page = async(page, numberOfEstates) => {
     const realEstates = []
-
     await page.waitForXPath(getEstateXpath(1));
-
 
     for(let i = 1; i <= 20; i++) {
         const baseXpath = getEstateXpath(i)
@@ -34,7 +33,6 @@ const scan1page = async(page, numberOfEstates) => {
             url
         })
     }
-
     return realEstates
 }
 
@@ -45,7 +43,6 @@ const run = async () => {
     const page = await browser.newPage()
     
     
-    // because of waiting for clicking agree button
     await page.goto('https://www.sreality.cz/en/search/for-sale/apartments?order=cheapest')
     await page.waitForTimeout(3000)
 
@@ -54,16 +51,19 @@ const run = async () => {
         const onePageEstates = await scan1page(page, 20)
         realEstatesList = [...realEstatesList, ...onePageEstates]
         await goToNextPage(page)
-        // await page.waitForTimeout(1000)
+        await page.waitForTimeout(2000)
     }
 
-    console.log(realEstatesList.length)
-    
 
- 
-
+    fs.writeFile('results.json', JSON.stringify(realEstatesList), function (err,data) {
+        if (err) {
+            return console.log(err)
+        }
+        console.log(data)
+    })
     
-    // await page.waitForTimeout(1000)
+    
+    await page.waitForTimeout(1000)
     browser.close()
     return 'done'
 }
