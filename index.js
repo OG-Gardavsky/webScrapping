@@ -15,41 +15,22 @@ const run = async () => {
     
     // because of waiting for clicking agree button
     await page.goto('https://www.sreality.cz/en/search/for-sale/apartments?order=cheapest')
-    await page.waitForTimeout(5000)
-    // await page.wai
-    // console.log('waited')
+    await page.waitForTimeout(3000)
 
 
 
-    // xpath
-    // const propertyObject =  (await page.$x('/html/body/div[2]/div[1]/div[2]/div[3]/div[3]/div/div/div/div/div[3]/div/div[1]'))[0]
-    // console.log(propertyObject.innerHTML)
 
-
-    const propertyObject = await page.evaluate(() => {
-        const propObject = document.querySelector('.info.clear.ng-scope')
-        return propObject.innerHTML
-
-
+    const properties = await page.$$eval('div.property.ng-scope', elements => {
+        return elements.map(element => element.innerHTML)
     })
-
-    console.log(propertyObject)
-
-
-    
-    
-    
-    
-
-
+    // name.forEach((el) => console.log(el.innerText))
+    console.log(properties)
 
 
     
-
-
-
-
-
+    
+    
+ 
 
 
     await goToNextPage(page)
@@ -60,20 +41,3 @@ const run = async () => {
 
 
 run().then((res)=> console.log(res))
-
-
-
-
-
-
-
-//trying to switch the language
-// await page.goto('https://www.sreality.cz/')
-// await page.waitForTimeout(5000)
-// console.log('waited')
-
-//switch language
-// const czechButton = (await page.$x('/html/body/div[2]/preact[1]/div/header/div[3]/div[1]/div/button'))[0]
-// czechButton.click()
-// const englishButton = (await page.$x('/html/body/div[2]/preact[1]/nav/ul/li[1]/a'))[0]
-// englishButton.click()
