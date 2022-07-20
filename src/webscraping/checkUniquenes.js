@@ -12,5 +12,8 @@ function onlyUnique(value, index, self) {
 }
 const unique = urls.filter(onlyUnique)
 
+
+console.log(estates)
+
 console.log('is same length' , unique.length === urls.length1)
 
