@@ -35,6 +35,18 @@ export default function HomePage() {
             </div>
             <main>
                 <Header />
+
+                {
+                    apartments.map((apartment) => {
+                        return <ApartmentCard
+                                title={apartment.title}
+                                url={apartment.url}
+                                imageLink={apartment.imageLink}
+                                key={apartment.url}
+                               />
+                    })
+                }
+
                 <ApartmentCard />
             </main>
             <DefaultFooter />
