@@ -9,11 +9,10 @@ export default function DefaultFooter() {
                 <div className="container max-w-7xl mx-auto px-4">
                     <div className="flex flex-wrap text-center lg:text-left pt-6">
                         <div className="w-full lg:w-6/12 px-4">
-                            <H5 color="gray">Material Tailwind</H5>
                             <div className="-mt-4">
                                 <LeadText color="blueGray">
-                                    Easy to use React components for Tailwind
-                                    CSS and Material Design.
+                                    Example page for estates from {' '}
+                                    <a href={'https://www.sreality.cz'} target={'_blank'}>Sreality.cz</a>
                                 </LeadText>
                             </div>
                         </div>

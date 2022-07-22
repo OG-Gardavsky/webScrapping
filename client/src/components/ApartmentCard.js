@@ -14,11 +14,10 @@ export default function ApartmentCard({title, imageLink, url}) {
 
 
 
-                        <div className="text-center my-8">
+                        <div className="place-content-center my-8">
                             <a href={url} target={'_blank'}>
                                 <Image src={imageLink} rounded={false} raised={true} />
                                 <H3 color="gray">{title}</H3>
-                                <H3 color="gray">dfdkfjdfjkdj</H3>
                             </a>
 
 
