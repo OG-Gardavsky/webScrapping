@@ -10,7 +10,7 @@ const getEstateXpath = (index) => {
     return `//*[@id="page-layout"]/div[2]/div[3]/div[3]/div/div/div/div/div[3]/div/div[${index}]`
 }
 
-const scanOnepage = async(page, numberOfEstates) => {
+const scanOnepage = async(page, numberOfEstates, numberOfImages) => {
     const realEstates = []
     await page.waitForXPath(getEstateXpath(1));
 
@@ -19,8 +19,13 @@ const scanOnepage = async(page, numberOfEstates) => {
         const elTitle = await page.$x(`${baseXpath}//span[@class="name ng-binding"]`)
         const title  = await page.evaluate(el => el.textContent, elTitle[0])
 
-        const elImage = await page.$x(`${baseXpath}//img`)
-        const imageLink  = await page.evaluate(el => el.getAttribute('src'), elImage[0])
+        const imageLinks = []
+        for(let i = 1; i < numberOfImages + 1; i++) {
+            const elImage = await page.$x(`${baseXpath}//a[${i}]/img`)
+            const imageLink  = await page.evaluate(el => el.getAttribute('src'), elImage[0])
+            imageLinks.push(imageLink)
+        }
+        
 
         const elUrlParams = await page.$x(`${baseXpath}//a[@ng-href]`)
         const urlParams  = await page.evaluate(el => el.getAttribute('ng-href'), elUrlParams[0])
@@ -28,7 +33,7 @@ const scanOnepage = async(page, numberOfEstates) => {
 
         realEstates.push({
             title,
-            imageLink,
+            imageLinks,
             url
         })
     }
@@ -46,9 +51,8 @@ const run = async () => {
     let realEstatesList = []
     for(let i = 0; i < 10; i++) {
         await goToSrealityPage(page, i+1)
-        await page.waitForTimeout(4000)
         
-        const onePageEstates = await scanOnepage(page, 20)
+        const onePageEstates = await scanOnepage(page, 20, 3)
         realEstatesList = [...realEstatesList, ...onePageEstates] 
     }
 
