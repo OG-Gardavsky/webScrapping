@@ -3,11 +3,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'assets/styles/tailwind.css';
 
 function App() {
-    return (
-        <>
-            <HomePage />
-        </>
-    );
+    return <HomePage />;
 }
 
 export default App;
