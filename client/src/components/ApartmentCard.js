@@ -1,5 +1,5 @@
 import H3 from '@material-tailwind/react/Heading3';
-import {Image} from "@material-tailwind/react";
+import {Heading4, Heading5, Image} from "@material-tailwind/react";
 
 
 export default function ApartmentCard({title, imageLinks, url}) {
@@ -20,7 +20,7 @@ export default function ApartmentCard({title, imageLinks, url}) {
                                     {imageLinks.map((link) => <Image src={link} rounded={false} raised={false} />)}
                                 </div>
 
-                                <H3 color="gray">{title}</H3>
+                                <Heading5 color="gray">{title}</Heading5>
                             </a>
 
 
