@@ -43,11 +43,16 @@ const scanOnepage = async(page, numberOfEstates, numberOfImages) => {
 
 const run = async () => {
     const browser = await puppeteer.launch({
-        headless: false,    
-    });
+        headless: true,
+        executablePath: '/usr/bin/chromium-browser',
+        args: [
+          '--no-sandbox',
+          '--disable-gpu',
+        ]
+    })
     const page = await browser.newPage()
     
-
+    //udelat  z toho const 
     let realEstatesList = []
     for(let i = 0; i < 10; i++) {
         await goToSrealityPage(page, i+1)
