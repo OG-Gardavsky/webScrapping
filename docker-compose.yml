@@ -1,12 +1,5 @@
 version: '3.9'
 services:
-    app:
-        image: scrape-app
-        build: server
-        ports:
-            - "8080:4000"
-        depends_on:
-            - database
     database:
         image: "postgres:14.1-alpine"
         environment:
@@ -15,15 +8,20 @@ services:
             - POSTGRES_USER=postgres
         ports:
             - "5430:5432"
-    #     # volumes:
-    #     #     - db-data:/foo
-    # webscrapping:
-    #     image: scraper
-    #     build:
-    #         context: webscrapping
-    #         dockerfile: Dockerfile
-
-
-# volumes:
-#     db-data:
+        volumes:
+            - db-data:/foo
+    webscrapping:
+        image: scraper
+        build:
+            context: webscrapping
+            dockerfile: Dockerfile
+    # app:
+    #     image: scrape-app
+    #     build: server
+    #     ports:
+    #         - "8080:4000"
+    #     depends_on:
+    #         - database
+volumes:
+    db-data:
 

@@ -10,7 +10,9 @@
   "author": "Ondrej Gardavsky",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "jsdom": "^20.0.0",
+    "pg": "^8.7.3",
     "puppeteer": "^15.3.2"
   }
 }
