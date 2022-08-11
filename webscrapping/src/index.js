@@ -1,19 +1,19 @@
 const puppeteer = require('puppeteer')
 const fs = require('fs')
-const { createStructure } = require('./db')
+const { createStructure, connectDb } = require('./db')
 const {browserConfig, scrapeEstates} = require("./utils");
 
 
 
 
 const run = async () => {
-    const browser = await puppeteer.launch()
-    const page = await browser.newPage(browserConfig)
+    const browser = await puppeteer.launch(browserConfig)
+    const page = await browser.newPage()
     
     // const realEstatesList = await scrapeEstates(page, 10, 20, 3)
 
 
-    await createStructure()
+    await connectDb()
     
     
     await page.waitForTimeout(1000)
