@@ -52,13 +52,12 @@ const run = async () => {
     })
     const page = await browser.newPage()
     
-    //udelat  z toho const 
-    let realEstatesList = []
+    const realEstatesList = []
     for(let i = 0; i < 10; i++) {
         await goToSrealityPage(page, i+1)
         
         const onePageEstates = await scanOnepage(page, 20, 3)
-        realEstatesList = [...realEstatesList, ...onePageEstates] 
+        realEstatesList.push(...onePageEstates)
     }
 
 
