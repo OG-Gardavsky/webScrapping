@@ -5,7 +5,7 @@ dotenv.config()
 
 const connectDb = async () => {
     try {
-        const client = new Client({
+        const dbClient = new Client({
             user: process.env.PGUSER,
             host: process.env.PGHOST,
             database: process.env.PGDATABASE,
@@ -13,42 +13,40 @@ const connectDb = async () => {
             port: process.env.PGPORT
         })
 
-        await client.connect()
-
-        return client
+        await dbClient.connect()
+        return dbClient
     } catch (e) {
         console.log(e)
     }
 }
 
 
-
-const createStructure = async () => {
-    const client = await connectDb()
-
-    const text = `
-        CREATE TABLE IF NOT EXISTS "estate" (
-            "id" SERIAL,
-            "title" VARCHAR(100),
-            "url" VARCHAR(100),
-            "image_url" VARCHAR(100),
+const createDbStructure = async (dbClient) => {
+    const query = `
+        DROP TABLE IF EXISTS images;
+        DROP TABLE IF EXISTS estates;
+        
+        CREATE TABLE estates (
+            id SERIAL NOT NULL,
+            title text,
+            url text,
             PRIMARY KEY ("id")
         );
-
         
-        
-        `
+        CREATE TABLE images (
+            imageUrl text,
+            estateId INT,
+            FOREIGN KEY (estateId) REFERENCES estates (id)
+        );
+    `
 
     try {
-        const res = await client.query(text)
-        await client.end()
+        const res = await dbClient.query(query)
     } catch (e) {
         console.log(e)
     }
-    
-    
 }
 
 
 
-module.exports = { connectDb, createStructure }
+module.exports = { connectDb, createDbStructure }

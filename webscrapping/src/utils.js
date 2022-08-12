@@ -56,4 +56,36 @@ const browserConfig  = {
     ]
 }
 
-module.exports = { goToSrealityPage, getEstateXpath, scanOnepage, scrapeEstates, browserConfig, }
+
+const getInsertEstateQuery = (id, title, url) => {
+    return `INSERT INTO estates (id, title, url) VALUES (${id}, '${title}', '${url}');`
+}
+
+const getInsertImageQuery = (imageUrl, estateId) => {
+    return `INSERT INTO images (imageUrl, estateId) VALUES ('${imageUrl}', '${estateId}');`
+}
+
+const writeToDB = async (dbClient, estates) => {
+    let query = ''
+    
+    try {
+        estates.forEach(({title, url, imageLinks}, index) => {
+            query += getInsertEstateQuery(index, title, url)
+
+            if (imageLinks) {
+                imageLinks.forEach(link => query += getInsertImageQuery(link, index))
+            }        
+        });
+
+        await dbClient.query(query)
+
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+
+
+
+
+module.exports = { goToSrealityPage, getEstateXpath, scanOnepage, scrapeEstates, browserConfig, writeToDB}

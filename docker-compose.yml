@@ -8,8 +8,8 @@ services:
             - POSTGRES_USER=postgres
         ports:
             - "5430:5432"
-        volumes:
-            - db-data:/foo
+        # volumes:
+        #     - db-data:/foo
     webscrapping:
         image: scraper
         build:
@@ -22,6 +22,8 @@ services:
             - PGPASSWORD=postgres
             - PGDATABASE=postgres
             - PGPORT=5432
+        depends_on:
+            - database
     # app:
     #     image: scrape-app
     #     build: server
@@ -29,6 +31,6 @@ services:
     #         - "8080:4000"
     #     depends_on:
     #         - database
-volumes:
-    db-data:
+# volumes:
+#     db-data:
 
