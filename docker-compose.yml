@@ -15,6 +15,13 @@ services:
         build:
             context: webscrapping
             dockerfile: Dockerfile
+        environment:
+            - PORT=4000
+            - PGUSER=postgres
+            - PGHOST=database
+            - PGPASSWORD=postgres
+            - PGDATABASE=postgres
+            - PGPORT=5432
     # app:
     #     image: scrape-app
     #     build: server
