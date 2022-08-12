@@ -15,17 +15,7 @@ const connectDb = async () => {
 
         await client.connect()
 
-        const text = `
-            CREATE TABLE IF NOT EXISTS "estate" (
-                "id" SERIAL,
-                "title" VARCHAR(100),
-                "url" VARCHAR(100),
-                "image_url" VARCHAR(100),
-                PRIMARY KEY ("id")
-            );`
-        
-        const res = await client.query(text)
-        await client.end()
+        return client
     } catch (e) {
         console.log(e)
     }
@@ -34,7 +24,7 @@ const connectDb = async () => {
 
 
 const createStructure = async () => {
-    const client = connectDb()
+    const client = await connectDb()
 
     const text = `
         CREATE TABLE IF NOT EXISTS "estate" (
@@ -43,7 +33,11 @@ const createStructure = async () => {
             "url" VARCHAR(100),
             "image_url" VARCHAR(100),
             PRIMARY KEY ("id")
-        );`
+        );
+
+        
+        
+        `
 
     try {
         const res = await client.query(text)

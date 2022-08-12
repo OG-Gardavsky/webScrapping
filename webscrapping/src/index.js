@@ -12,8 +12,7 @@ const run = async () => {
     
     // const realEstatesList = await scrapeEstates(page, 10, 20, 3)
 
-
-    await connectDb()
+    await createStructure()
     
     
     await page.waitForTimeout(1000)
