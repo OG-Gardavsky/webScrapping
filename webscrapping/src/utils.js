@@ -65,7 +65,7 @@ const getInsertImagesQuery = (imagesUrlArray, estateId) => {
     const arrayToInsert = JSON.stringify(imagesUrlArray)
         .replace('[', '{').replace(']', '}')
 
-    return `INSERT INTO images (imageUrl, estateId) VALUES ( '${arrayToInsert}', '${estateId}');`
+    return `INSERT INTO images (imagesUrls, estateId) VALUES ( '${arrayToInsert}', '${estateId}');`
 }
 
 const writeToDB = async (dbClient, estates) => {
