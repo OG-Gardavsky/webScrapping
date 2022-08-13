@@ -6,8 +6,6 @@ const dotenv = require("dotenv")
 dotenv.config()
 
 
-
-
 const run = async () => {
     const browser = await puppeteer.launch(browserConfig)
     const page = await browser.newPage()
@@ -23,6 +21,4 @@ const run = async () => {
     await browser.close()
 }
 
-
-// run().then((res)=> console.log(res))
 run()

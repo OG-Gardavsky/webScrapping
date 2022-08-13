@@ -61,8 +61,11 @@ const getInsertEstateQuery = (id, title, url) => {
     return `INSERT INTO estates (id, title, url) VALUES (${id}, '${title}', '${url}');`
 }
 
-const getInsertImageQuery = (imageUrl, estateId) => {
-    return `INSERT INTO images (imageUrl, estateId) VALUES ('${imageUrl}', '${estateId}');`
+const getInsertImagesQuery = (imagesUrlArray, estateId) => {
+    const arrayToInsert = JSON.stringify(imagesUrlArray)
+        .replace('[', '{').replace(']', '}')
+
+    return `INSERT INTO images (imageUrl, estateId) VALUES ( '${arrayToInsert}', '${estateId}');`
 }
 
 const writeToDB = async (dbClient, estates) => {
@@ -73,7 +76,7 @@ const writeToDB = async (dbClient, estates) => {
             query += getInsertEstateQuery(index, title, url)
 
             if (imageLinks) {
-                imageLinks.forEach(link => query += getInsertImageQuery(link, index))
+                query += getInsertImagesQuery(imageLinks, index)
             }        
         });
 

@@ -34,7 +34,7 @@ const createDbStructure = async (dbClient) => {
         );
         
         CREATE TABLE images (
-            imageUrl text,
+            imageUrl text[],
             estateId INT,
             FOREIGN KEY (estateId) REFERENCES estates (id)
         );
