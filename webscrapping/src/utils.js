@@ -1,3 +1,6 @@
+const fs = require('fs')
+const { createDbStructure, connectDb } = require('./db')
+
 const goToSrealityPage = async(page, pageNumber) => {
     await page.goto(`https://www.sreality.cz/en/search/for-sale/apartments?page=${pageNumber}&order=cheapest`)
 }
@@ -57,15 +60,11 @@ const browserConfig  = {
 }
 
 
-const getInsertEstateQuery = (id, title, url) => {
-    return `INSERT INTO estates (id, title, url) VALUES (${id}, '${title}', '${url}');`
-}
-
-const getInsertImagesQuery = (imagesUrlArray, estateId) => {
-    const arrayToInsert = JSON.stringify(imagesUrlArray)
+const getInsertEstateQuery = (id, title, url, imagesUrlArray) => {
+    const imgArrayToInsert = JSON.stringify(imagesUrlArray)
         .replace('[', '{').replace(']', '}')
 
-    return `INSERT INTO images (imagesUrls, estateId) VALUES ( '${arrayToInsert}', '${estateId}');`
+    return `INSERT INTO estates (id, title, url, imagesUrls) VALUES (${id}, '${title}', '${url}', '${imgArrayToInsert}');`
 }
 
 const writeToDB = async (dbClient, estates) => {
@@ -73,11 +72,7 @@ const writeToDB = async (dbClient, estates) => {
     
     try {
         estates.forEach(({title, url, imageLinks}, index) => {
-            query += getInsertEstateQuery(index, title, url)
-
-            if (imageLinks) {
-                query += getInsertImagesQuery(imageLinks, index)
-            }        
+            query += getInsertEstateQuery(index, title, url, imageLinks)    
         });
 
         await dbClient.query(query)

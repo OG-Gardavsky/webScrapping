@@ -30,13 +30,8 @@ const createDbStructure = async (dbClient) => {
             id SERIAL NOT NULL,
             title text,
             url text,
-            PRIMARY KEY ("id")
-        );
-        
-        CREATE TABLE images (
             imagesUrls text[],
-            estateId INT,
-            FOREIGN KEY (estateId) REFERENCES estates (id)
+            PRIMARY KEY ("id")
         );
     `
 
