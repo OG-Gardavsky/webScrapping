@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import Card from '../components/Card'
 import Pagination from "../components/Pagination";
 import {getHost} from "../utils";
+import {useSearchParams} from "react-router-dom";
 
 export default function HomePage() {
 
@@ -16,43 +17,56 @@ export default function HomePage() {
     const [totalPosts, setTotalPosts] = useState(200)
 
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
 
     useEffect(() => {
-        getEstates(currentPage)
-            .then(() => {
-                setLoading(false)
-                setLoadError(false)
-            })
-            .catch((err) => {
-                setLoadError(true)
-                setLoading(false)
-            })
+        const page = searchParams.get('page')
 
+        if(page) {
+            setCurrentPage(page)
+            getEstates(page)
+        } else {
+            getEstates(currentPage)
+        }
     }, [])
 
+
+
     const getEstates = async (pageNum) => {
-        const res = await fetch(`${getHost()}/estates?page=${pageNum}`)
-        const { estates } = await res.json()
-        setEstatelist(estates)
+        try {
+            setLoading(true)
+            const res = await fetch(`${getHost()}/estates?page=${pageNum}`)
+            const { estates } = await res.json()
+            setEstatelist(estates)
+
+            setLoading(false)
+            setLoadError(false)
+        } catch (e) {
+            console.log(e)
+            setLoadError(true)
+            setLoading(false)
+        }
+
     }
 
     const paginate = async (number) => {
         setCurrentPage(number)
+        setSearchParams({page: number})
         await getEstates(number)
     }
 
     return (
         <>
+            <h1>{searchParams.page}</h1>
             <div className="absolute w-full z-20">
                 <DefaultNavbar />
             </div>
             <main>
                 <Header />
-
                 { !loading && !loadError && <Card><Pagination currentPage={currentPage} postsPerPage={20} totalPosts={totalPosts} paginate={paginate}/></Card> }
                 { loadError && <Card><h1>Sorry, we are unable to load estates.</h1></Card> }
                 { loading && <Card><h1>Loading....</h1></Card> }
-
 
 
                 {estatelist.map((estate) => {
@@ -64,6 +78,8 @@ export default function HomePage() {
                            />
                 })
                 }
+
+                { !loading && !loadError && <Card><Pagination currentPage={currentPage} postsPerPage={20} totalPosts={totalPosts} paginate={paginate}/></Card> }
             </main>
             <DefaultFooter />
         </>
