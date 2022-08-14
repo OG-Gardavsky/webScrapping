@@ -70,7 +70,6 @@ export default function HomePage() {
             </div>
             <main>
                 <Header />
-                { !loading && !loadError && <Card><Pagination currentPage={currentPage} postsPerPage={20} totalPosts={totalPosts} paginate={paginate}/></Card> }
                 { loadError && <Card><h1>Sorry, we are unable to load estates.</h1></Card> }
                 { loading && <Card><h1>Loading....</h1></Card> }
 
