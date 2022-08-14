@@ -17,7 +17,7 @@ export default function ApartmentCard({title, imageLinks, url}) {
                         <div className=" place-content-center my-8">
                             <a href={url} target={'_blank'}>
                                 <div className="flex flex-row container flex-wrap ">
-                                    {imageLinks.map((link) => <Image src={link} rounded={false} raised={false} />)}
+                                    {imageLinks.map((link) => <Image src={link} rounded={false} raised={false} key={link} />)}
                                 </div>
 
                                 <Heading5 color="gray">{title}</Heading5>

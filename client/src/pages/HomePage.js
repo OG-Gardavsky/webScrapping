@@ -2,6 +2,9 @@ import DefaultNavbar from 'components/DefaultNavbar';
 import DefaultFooter from 'components/DefaultFooter';
 import Header from 'components/Header';
 import ApartmentCard from 'components/ApartmentCard';
+import {useEffect, useState} from "react";
+import axios from "axios";
+import {Button} from "@material-tailwind/react";
 
 
 const apartments = [
@@ -161,6 +164,23 @@ const apartments = [
 ]
 
 export default function HomePage() {
+
+    const [estatelist, setEstatelist] = useState([])
+
+    const getEstates = async () => {
+
+        const res = await fetch('http://localhost:4000/estates')
+        const { estates } = await res.json()
+        setEstatelist(estates)
+    }
+
+    useEffect(() => {
+        getEstates()
+            .then()
+            .catch((err) => console.log(err))
+
+    }, [])
+
     return (
         <>
             <div className="absolute w-full z-20">
@@ -170,12 +190,12 @@ export default function HomePage() {
                 <Header />
 
                 {
-                    apartments.map((apartment) => {
+                    estatelist.map((estate) => {
                         return <ApartmentCard
-                                title={apartment.title}
-                                url={apartment.url}
-                                imageLinks={apartment.imageLinks}
-                                key={apartment.url}
+                                title={estate.title}
+                                url={estate.url}
+                                imageLinks={estate.imagesurls}
+                                key={estate.id}
                                />
                     })
                 }

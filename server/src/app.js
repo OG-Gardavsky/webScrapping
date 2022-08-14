@@ -1,11 +1,13 @@
 const express = require('express')
 const { connectDb } = require('./db')
+const cors = require('cors')
 require('dotenv').config()
 
 const port = process.env.PORT || 4000
 
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 
 
@@ -13,7 +15,7 @@ app.use(express.json())
 app.get('/estates',async (req,  res) => {
     const queryCount = `SELECT count(id) FROM estates`
     const query =
-        `SELECT id, title, imagesurls FROM estates
+        `SELECT id, title, url, imagesurls FROM estates
          ORDER BY id ASC
          LIMIT 20;
          `
