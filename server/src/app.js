@@ -10,6 +10,11 @@ app.use(express.json())
 app.use(cors())
 
 
+let dbClient
+connectDb()
+    .then(client => dbClient =  client )
+    .catch()
+
 
 
 app.get('/estates',async (req,  res) => {
@@ -23,7 +28,6 @@ app.get('/estates',async (req,  res) => {
          `
         
     try {
-        const dbClient = await connectDb()
 
         const estates = await dbClient.query(query)
         const estatesCount = await dbClient.query(queryCount)
@@ -32,6 +36,7 @@ app.get('/estates',async (req,  res) => {
 
     } catch (e) {
         console.log(e)
+        res.status(500).send({error: 'Sorry, our server is not in shape.'})
     }
 })
 

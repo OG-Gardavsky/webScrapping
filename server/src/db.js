@@ -13,8 +13,6 @@ const connectDb = async () => {
             port: process.env.PGPORT
         })
 
-
-
         await dbClient.connect()
         return dbClient
     } catch (e) {
