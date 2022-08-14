@@ -5,6 +5,7 @@ import ApartmentCard from 'components/ApartmentCard';
 import {useEffect, useState} from "react";
 import Card from '../components/Card'
 import Pagination from "../components/Pagination";
+import {getHost} from "../utils";
 
 export default function HomePage() {
 
@@ -22,12 +23,15 @@ export default function HomePage() {
                 setLoading(false)
                 setLoadError(false)
             })
-            .catch((err) => setLoadError(true))
+            .catch((err) => {
+                setLoadError(true)
+                setLoading(false)
+            })
 
     }, [])
 
     const getEstates = async (pageNum) => {
-        const res = await fetch(`http://localhost:8080/estates?page=${pageNum}`)
+        const res = await fetch(`${getHost()}/estates?page=${pageNum}`)
         const { estates } = await res.json()
         setEstatelist(estates)
     }
@@ -45,7 +49,7 @@ export default function HomePage() {
             <main>
                 <Header />
 
-                <Card><Pagination currentPage={currentPage} postsPerPage={20} totalPosts={totalPosts} paginate={paginate}/></Card>
+                { !loading && !loadError && <Card><Pagination currentPage={currentPage} postsPerPage={20} totalPosts={totalPosts} paginate={paginate}/></Card> }
                 { loadError && <Card><h1>Sorry, we are unable to load estates.</h1></Card> }
                 { loading && <Card><h1>Loading....</h1></Card> }
 
