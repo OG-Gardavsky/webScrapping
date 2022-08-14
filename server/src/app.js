@@ -13,11 +13,13 @@ app.use(cors())
 
 
 app.get('/estates',async (req,  res) => {
+    const pageInfo = req.query.page && Number.isInteger(Number(req.query.page)) ? Number(req.query.page) : 1
+
     const queryCount = `SELECT count(id) FROM estates`
     const query =
         `SELECT id, title, url, imagesurls FROM estates
+         WHERE page = ${pageInfo}
          ORDER BY id ASC
-         LIMIT 20;
          `
         
     try {
