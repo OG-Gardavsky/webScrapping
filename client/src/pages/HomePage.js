@@ -37,15 +37,21 @@ export default function HomePage() {
         try {
             setLoading(true)
             const res = await fetch(`${getHost()}/estates?page=${pageNum}`)
-            const { estates } = await res.json()
-            setEstatelist(estates)
 
+            if(res.status !== 200) {
+                setLoadError(true)
+                setLoading(false)
+                return
+            }
+
+            const { estates, count } = await res.json()
+            setEstatelist(estates)
+            setTotalPosts(count)
             setLoading(false)
             setLoadError(false)
         } catch (e) {
             console.log(e)
-            setLoadError(true)
-            setLoading(false)
+
         }
 
     }
@@ -69,7 +75,7 @@ export default function HomePage() {
                 { loading && <Card><h1>Loading....</h1></Card> }
 
 
-                {estatelist.map((estate) => {
+                {!loading && !loadError && estatelist.map((estate) => {
                     return <ApartmentCard
                             title={estate.title}
                             url={estate.url}

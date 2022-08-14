@@ -19,7 +19,8 @@ connectDb()
 
 
 app.get('/estates',async (req,  res) => {
-    const pageInfo = req.query.page && Number.isInteger(Number(req.query.page)) ? Number(req.query.page) : 1
+    const pageInfo = req.query && req.query.page && Number.isInteger(Number(req.query.page))
+        ? Number(req.query.page) : 1
 
     const queryCount = `SELECT count(id) FROM estates`
     const query =
