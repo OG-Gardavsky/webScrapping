@@ -7,12 +7,7 @@ export default function ApartmentCard({title, imageLinks, url}) {
         <section className="relative py-8 bg-gray-100">
             <div className="container max-w-7xl px-4 mx-auto">
                 <div className="relative flex flex-col min-w-0 bg-white w-full mb-6 shadow-xl rounded-2xl my-4">
-                {/*<div>*/}
                     <div className="px-6">
-
-
-
-
 
                         <div className=" place-content-center my-8">
                             <a href={url} target={'_blank'}>
@@ -22,11 +17,7 @@ export default function ApartmentCard({title, imageLinks, url}) {
 
                                 <Heading5 color="gray">{title}</Heading5>
                             </a>
-
-
                         </div>
-
-
                     </div>
                 </div>
             </div>
