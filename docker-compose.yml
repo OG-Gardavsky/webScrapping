@@ -8,8 +8,6 @@ services:
             - POSTGRES_USER=postgres
         ports:
             - "5430:5432"
-        # volumes:
-        #     - db-data:/foo
     webscrapping:
         image: scraper
         build:
@@ -23,8 +21,8 @@ services:
             - PGPORT=5432
         depends_on:
             - database
-    app:
-        image: scrape-app
+    server:
+        image: server-app
         build: server
         environment:
             - PORT=4000
@@ -34,10 +32,14 @@ services:
             - PGDATABASE=postgres
             - PGPORT=5432
         ports:
-            - "8080:4000"
+            - "4000:4000"
         restart: on-failure
         depends_on:
             - database
-# volumes:
-#     db-data:
+    client:
+        image: cliient-app
+        build: client
+        ports:
+            - "8080:8080"
+        restart: on-failure
 
