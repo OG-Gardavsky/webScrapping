@@ -8,6 +8,7 @@ import Card from '../components/Card'
 export default function HomePage() {
 
     const [estatelist, setEstatelist] = useState([])
+    const [loading, setLoading] = useState(true)
     const [loadError, setLoadError] = useState(false)
 
     const getEstates = async () => {
@@ -19,7 +20,10 @@ export default function HomePage() {
 
     useEffect(() => {
         getEstates()
-            .then()
+            .then(() => {
+                setLoading(false)
+                setLoadError(false)
+            })
             .catch((err) => setLoadError(true))
 
     }, [])
@@ -33,16 +37,18 @@ export default function HomePage() {
                 <Header />
 
                 { loadError && <Card><h1>Sorry, we are unable to load estates.</h1></Card> }
+                { loading && <Card><h1>Loading....</h1></Card> }
 
-                {
-                    estatelist.map((estate) => {
-                        return <ApartmentCard
-                                title={estate.title}
-                                url={estate.url}
-                                imageLinks={estate.imagesurls}
-                                key={estate.id}
-                               />
-                    })
+
+
+                {estatelist.map((estate) => {
+                    return <ApartmentCard
+                            title={estate.title}
+                            url={estate.url}
+                            imageLinks={estate.imagesurls}
+                            key={estate.id}
+                           />
+                })
                 }
             </main>
             <DefaultFooter />
