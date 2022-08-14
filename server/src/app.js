@@ -13,8 +13,8 @@ app.use(cors())
 
 let dbClient
 connectDb()
-    .then(client => dbClient =  client )
-    .catch()
+    .then(client => dbClient = client )
+    .catch((err) => console.log('unable to connect the server to db'))
 
 
 
@@ -30,6 +30,9 @@ app.get('/estates',async (req,  res) => {
          `
         
     try {
+        if(!dbClient) {
+            dbClient = await connectDb()
+        }
 
         const estates = await dbClient.query(query)
         const estatesCount = await dbClient.query(queryCount)
