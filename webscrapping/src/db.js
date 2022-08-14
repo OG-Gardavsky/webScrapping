@@ -31,6 +31,7 @@ const createDbStructure = async (dbClient) => {
             title text,
             url text,
             imagesUrls text[],
+            page int,
             PRIMARY KEY ("id")
         );
     `

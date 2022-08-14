@@ -9,7 +9,7 @@ const getEstateXpath = (index) => {
     return `//*[@id="page-layout"]/div[2]/div[3]/div[3]/div/div/div/div/div[3]/div/div[${index}]`
 }
 
-const scanOnepage = async(page, numberOfEstates, numberOfImages) => {
+const scanOnepage = async(page, numberOfEstates, numberOfImages, pageNumber) => {
     const realEstates = []
     await page.waitForXPath(getEstateXpath(1));
 
@@ -33,7 +33,8 @@ const scanOnepage = async(page, numberOfEstates, numberOfImages) => {
         realEstates.push({
             title,
             imageLinks,
-            url
+            url,
+            page: pageNumber
         })
     }
     return realEstates
@@ -44,7 +45,7 @@ const scrapeEstates =  async (page, numberOfPages, numberOfEstatesOnPage, number
     for(let i = 0; i < numberOfPages; i++) {
         await goToSrealityPage(page, i+1)
 
-        const onePageEstates = await scanOnepage(page, numberOfEstatesOnPage, numberOfImages)
+        const onePageEstates = await scanOnepage(page, numberOfEstatesOnPage, numberOfImages, i+1)
         realEstatesList.push(...onePageEstates)
     }
     return realEstatesList
@@ -60,19 +61,19 @@ const browserConfig  = {
 }
 
 
-const getInsertEstateQuery = (id, title, url, imagesUrlArray) => {
+const getInsertEstateQuery = (id, title, url, imagesUrlArray, page) => {
     const imgArrayToInsert = JSON.stringify(imagesUrlArray)
         .replace('[', '{').replace(']', '}')
 
-    return `INSERT INTO estates (id, title, url, imagesUrls) VALUES (${id}, '${title}', '${url}', '${imgArrayToInsert}');`
+    return `INSERT INTO estates (id, title, url, imagesUrls, page) VALUES (${id}, '${title}', '${url}', '${imgArrayToInsert}', ${page});`
 }
 
 const writeToDB = async (dbClient, estates) => {
     let query = ''
     
     try {
-        estates.forEach(({title, url, imageLinks}, index) => {
-            query += getInsertEstateQuery(index, title, url, imageLinks)    
+        estates.forEach(({title, url, imageLinks, page}, index) => {
+            query += getInsertEstateQuery(index, title, url, imageLinks, page)    
         });
 
         await dbClient.query(query)
